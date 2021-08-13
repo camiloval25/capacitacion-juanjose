@@ -1,39 +1,24 @@
 import React, { useState } from "react";
-import { resetNavigationTo } from "../../navigation/RootNavigator";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleError } from "../../redux/Login/action";
+import Loading from "../../modals/Loading";
+import Error from "../../modals/Error";
+import { userSignIn } from "../../redux/Login/action";
 import { Input, Button } from "../../theme/controls";
-import Service from "../../services";
-import { validateEmptyFields, validatePasswordLength } from "../../library/utils/regularValidations";
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.login.signInModals);
 
   const [form, setForm] = useState({
-    identification: "",
-    password: "",
+    identification: "1017244704",
+    password: "12345655",
   });
 
   const handleFormSignIn = (key) => (e) => {
     setForm({ ...form, [key]: e.nativeEvent.text });
   };
-
-  const submitForm = async () => {
-    const hasEmptyFields = validateEmptyFields(form)
-    if(hasEmptyFields){
-      return alert("Por favor, complete todos los campos")
-    }
-
-    const hasWrongLength = validatePasswordLength(form.password);
-    if(hasWrongLength){
-      return alert("La contraseña debe contener mínimo 4 caracteres");
-    }
-
-    try {
-      const userInformation = await Service("users/signin", "POST", null, form);
-      resetNavigationTo("Dashboard", userInformation)
-    } catch (error) {
-      alert("Correo electrónico o contraseña incorrecta")
-    }
-  }
 
   return (
     <SafeAreaView
@@ -48,13 +33,10 @@ const SignInForm = () => {
         value={form.password}
         placeholder="Contraseña"
         onChange={handleFormSignIn("password")}
-        maxLength={6}
+        maxLength={7}
       />
 
-      <Button
-        title="Sign In"
-        onPress={submitForm}
-      />
+      <Button title="Sign In" onPress={() => dispatch(userSignIn(form))} />
     </SafeAreaView>
   );
 };

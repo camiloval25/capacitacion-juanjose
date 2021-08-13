@@ -1,5 +1,5 @@
 import React from "react";
-import { resetNavigationTo } from "../../navigation/RootNavigator";
+import { navigate } from "../../navigation/RootNavigator";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import styles from "./styles";
@@ -20,7 +20,7 @@ const WalktroughController = () => {
             <Text style={styles.skipOption}>Skip now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.nextOptionContainer} onPress={() => resetNavigationTo("SignIn")}>
+          <TouchableOpacity style={styles.nextOptionContainer} onPress={() => navigate("SignIn")}>
             <Text style={styles.nextOption}>Next</Text>
           </TouchableOpacity>
         </View>
